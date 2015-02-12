@@ -1,0 +1,104 @@
+{% load staticfiles %}
+
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-theme.min.css' %}">
+		<link rel="stylesheet" type="text/css" href="{% static 'css/starter.css' %}">
+		<script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/nfsaas.js' %}"></script>
+
+	</head>
+	<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Documentação - Exemplo de restauração de um snapshot usando NFSAAS-API</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="starter-template">
+        <h2>Restore NFSAAS-API</h2><br/>
+
+        O acesso abaixo realiza uma chamada HTTP/POST para o endpoint de restauração da <a target="_blank" href="https://gitlab.globoi.com/storm/nfsaas-api">nfsaas-api</a> e executa uma restauração/cópia de um determinado snapshot através do comando "nmdcopy" para um path definido, ao fim do processo
+        de restauração/cópia com sucesso ou falha ele notifica a url de notificação especificada na chamada e retorna um json contendo o id da restauração e o path aonde foi restaurado na netapp.
+      </div>
+    </div>
+
+    <div class="code">
+	Exemplo da chamada do endpoint de restauração na nfsaas-api utilizando CURL :<br /><br />
+
+	<pre><code>
+	curl -X POST -u usuario:senha --data '{"notify-url": "http://localhost/notifi-me/"}' --header "Content-Type:application/json" http://nfsaas-api.cloud.globoi.com/times/{id}/projetos/{id}/ambientes/{id}/tamanhos/{id}/exports/{id}/snapshots/{id}/restore    	
+	</pre></code>
+
+	Exemplo de retorno da chamada :<br /><br />
+	<pre><code>
+	{
+	    id   : "1",     	>> Contém o id da restauração no Banco de Dados do nfsaas
+	    path : "vol..."	>> Path aonde foi restaurado na Netapp
+	}
+	</pre></code>
+	
+	<br />
+	<hr style="border:0;border-bottom:1px solid #ccc; background:#999;"/>
+	<br />
+	
+	Exemplo da chamada do endpoint de restauração na nfsaas-api utilizando Python & Request :<br /><br />
+	# No exemplo abaixo foi utilizado para realizar a requisição http na nfsaas-api a lib python-requests <br /> 
+	Maiores Informações em <a target="_blank" href="http://docs.python-requests.org/">http://docs.python-requests.org/</a>
+	<br/><br/>
+    <pre><code>
+    from django.http import HttpResponse
+    from django.shortcuts import render
+    import requests
+    import json
+
+    def restore(request):
+    	# URL Projeto nfsaas-api
+    	host='http://nfsaas-api.cloud.globoi.com' 
+
+    	# EndPoint de Restauração
+        endpoint='/times/{id}/projetos/{id}/ambientes/{id}/tamanhos/{id}/exports/{id}/snapshots/{id}/restore'
+
+        # URL de Notificação
+        data = {'notify-url': 'http://localhost/notifi-me/'}
+        headers = {'content-type': 'application/json'}
+
+        r = requests.post(host + endpoint, auth=('usuario','senha'), data=json.dumps(data), headers=headers)
+
+        return HttpResponse("Retorno >> " + str(r.json()))
+	</code></pre>
+
+	Exemplo de retorno do Request/Python :<br /><br />
+	<pre><code>
+	{
+	    id   : "1",     	>> Contém o id da restauração no Banco de Dados do nfsaas
+	    path : "vol..."	>> Path aonde foi restaurado na Netapp
+	}
+	</pre></code>
+
+	<br />
+	Clique e teste o post em Python: <br/><br/>
+	<img id="img-get" src="{% static 'img/get-answer.jpg' %}" title="Clique para realizar o POST"/>
+	<br/>
+	<div class="load">
+		<img src="{% static 'img/ajax-loader.gif' %}" />
+		<div class="text-load">Carregando...</div>
+	</div>	
+	<div class="result-post"></div>
+	<div class="clear" href="">[ LIMPAR ]</div>	
+	<br/><br/>
+	<b><i>OBS : Uma vez realizada a restauração, basta montar o path retornado e acessar o arquivo restaurado.</b></i>
+
+
+	<hr style="border:0;border-bottom:1px dashed #ccc; background:#999;"/>
+	<div class="team">Desenvolvido por STORM - <a href="mailto:storm@corp.globo.com">storm@corp.globo.com</a></div>
+	<br /><br />
+	</body>	
+</html>

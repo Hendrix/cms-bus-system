@@ -1,0 +1,3 @@
+hooks:
+        build:
+            - bash /home/application/current/static-deploy-hook.sh

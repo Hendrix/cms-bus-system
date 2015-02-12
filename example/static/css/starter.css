@@ -1,0 +1,42 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+
+.code {
+	margin-left: 5%;
+	width: 90%;
+}
+
+.team {
+	margin-top: -10px;
+	font-size: 10px;
+	font-style: normal;
+	font-family: sans-serif;
+	text-align: right;
+}
+
+.load {
+	margin-left: 55px;
+	margin-top: 10px;
+	display: none;
+}
+
+.text-load {
+	margin-top: 10px;
+	margin-left: -15px;
+	font-family: Arial;
+	font-size: 10px;
+	font-style: italic;
+}
+
+.clear {
+	margin-top: 10px;
+	margin-left: 5px;
+	font-family: Arial;
+	font-size: 10px;
+	display: none;
+}
